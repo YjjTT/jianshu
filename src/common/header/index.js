@@ -18,8 +18,9 @@ import {
 		SearchInfoItem,
 		SearchInfoList} from './style';
 class Header extends Component {
-	getListArea = (show) => {
-		if(show){
+
+	getListArea = () => {
+		if(this.props.focus){
 			return (
 				<SearchInfo>
 					<SearchInfoTitle className="clearfix">
@@ -27,12 +28,11 @@ class Header extends Component {
 						<SearchInfoSwitch>换一批</SearchInfoSwitch>
 					</SearchInfoTitle>
 					<SearchInfoList className="clearfix">
-						<SearchInfoItem>教育</SearchInfoItem>
-						<SearchInfoItem>教育</SearchInfoItem>
-						<SearchInfoItem>教育</SearchInfoItem>
-						<SearchInfoItem>教育</SearchInfoItem>
-						<SearchInfoItem>教育</SearchInfoItem>
-						<SearchInfoItem>教育</SearchInfoItem>
+						{
+							this.props.list.map((item)=>{
+								return <SearchInfoItem key={item}>{item}</SearchInfoItem>
+							})
+						}
 					</SearchInfoList>
 				</SearchInfo>
 			)
@@ -68,7 +68,7 @@ class Header extends Component {
 									<svg className={this.props.focus ? 'focused icon' : 'icon'} aria-hidden="true">
 											<use xlinkHref="#iconfangdajing2"></use>
 									</svg>
-									{this.getListArea(this.props.focus)}
+									{this.getListArea()}
 							</SearchWrapper>
 					</Nav>
 					<Addition>
@@ -87,14 +87,16 @@ class Header extends Component {
 
 const mapStateToProps = (state) => {
     return {
-				focus: state.get('header').get('focus') 
+				focus: state.get('header').get('focus'),
+				list: state.get('header').get('list')
 				// focus: state.getIn(['header', 'focus'])
     }
 }
 const mapDispatchToProps = (dispatch) => {
     return {
         handleInputFocus() {
-            dispatch(actionCreators.searchFocus());
+					dispatch(actionCreators.getList());
+          dispatch(actionCreators.searchFocus());
         },
         handleInputBlur () {
             dispatch(actionCreators.searchBlur());
