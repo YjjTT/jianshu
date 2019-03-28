@@ -1,13 +1,18 @@
-import React, { Component } from "react";
-import { HomeWrapper, HomeLeft, HomeRight } from "./style";
+import React, { PureComponent } from "react";
+import { HomeWrapper, HomeLeft, HomeRight, BackTop } from "./style";
 import Topic from "./component/Topic";
 import List from "./component/List";
 import Recomed from "./component/Recomed";
 import Writer from "./component/Writer";
-import axios from "axios";
 import { connect } from "react-redux";
+import { actionCreators } from './store'
 
-class Home extends Component {
+class Home extends PureComponent {
+  
+  handleScrollTop (){
+    window.scrollTo(0,0);
+  }
+
   render() {
     return (
       <HomeWrapper className="clearfix">
@@ -24,28 +29,39 @@ class Home extends Component {
           <Recomed />
           <Writer />
         </HomeRight>
+        { this.props.showScroll ? <BackTop onClick={this.handleScrollTop}>回到顶部</BackTop> : null } 
+        
       </HomeWrapper>
     );
   }
   componentDidMount() {
     this.props.changeHomeData();
+    this.bindEvents();
+  }
+  componentWillUnmount(){
+    window.removeEventListener('scroll', this.props.changeScrollTopShow)
+  }
+  bindEvents (){
+    window.addEventListener('scroll', this.props.changeScrollTopShow)
   }
 }
+const mapState = (state) => ({
+  showScroll: state.get('home').get('showScroll')
+})
 const mapDispatch = dispatch => ({
-  changeHomeData(action) {
-    axios.get("/api/home.json").then(res => {
-      const result = res.data.data;
-      const action = {
-        type: "change_home_data",
-        topicList: result.topicList,
-        recommendList: result.recommendList,
-        articleList: result.articleList
-      };
-      dispatch(action);
-    });
+  changeHomeData() {
+    dispatch(actionCreators.getHomeInfo());
+  },
+  changeScrollTopShow (){
+    let offset = document.documentElement.scrollTop
+    if(offset > 100){
+      dispatch(actionCreators.toggleTopShow(true));
+    }else{
+      dispatch(actionCreators.toggleTopShow(false));
+    }
   }
 });
 export default connect(
-  null,
+  mapState,
   mapDispatch
 )(Home);
