@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 class Topic extends Component {
   render() {
     const { list } = this.props;
+    console.log(list)
     return (
       <TopicWrapper className="clearfix">
         {
