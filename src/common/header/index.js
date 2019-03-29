@@ -3,33 +3,11 @@ import { CSSTransition } from "react-transition-group";
 import { connect } from "react-redux";
 import { actionCreators } from "./store";
 import { Link } from 'react-router-dom'
-import {
-  HeaderWrapper,
-  Logo,
-  Nav,
-  NavItem,
-  NavSearch,
-  Addition,
-  Button,
-  SearchWrapper,
-  SearchInfo,
-  SearchInfoTitle,
-  SearchInfoSwitch,
-  SearchInfoItem,
-  SearchInfoList
-} from "./style";
+import { HeaderWrapper, Logo, Nav, NavItem, NavSearch, Addition, Button, SearchWrapper, SearchInfo, SearchInfoTitle, SearchInfoSwitch, SearchInfoItem, SearchInfoList } from "./style";
+
 class Header extends PureComponent {
   getListArea = () => {
-    const {
-      focus,
-      list,
-      mouseIn,
-      page,
-      totalPage,
-      handleMouseEnter,
-      handleMouserLeave,
-      handleChangePage
-    } = this.props;
+    const {focus, list, mouseIn, page, totalPage, handleMouseEnter, handleMouserLeave, handleChangePage} = this.props;
     const newList = list.toJS();
     const pageList = [];
     if (newList.length) {
@@ -42,21 +20,21 @@ class Header extends PureComponent {
     if (focus || mouseIn) {
       return (
         <SearchInfo
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouserLeave}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouserLeave}
         >
           <SearchInfoTitle className="clearfix">
             热门搜索
             <SearchInfoSwitch
-              onClick={() => handleChangePage(page, totalPage, this.spinIcon)}
-            >
+        onClick={() => handleChangePage(page, totalPage, this.spinIcon)}
+        >
               <svg
-                className="icon spin"
-                ref={icon => {
-                  this.spinIcon = icon;
-                }}
-                aria-hidden="true"
-              >
+        className="icon spin"
+        ref={icon => {
+          this.spinIcon = icon;
+        }}
+        aria-hidden="true"
+        >
                 <use xlinkHref="#iconspin" />
               </svg>
               换一批
@@ -70,7 +48,7 @@ class Header extends PureComponent {
     }
   };
   render() {
-    const { focus, handleInputBlur, handleInputFocus, list } = this.props;
+    const {focus, handleInputBlur, handleInputFocus, list} = this.props;
     return (
       <HeaderWrapper>
         <Link to='/'>
@@ -88,15 +66,15 @@ class Header extends PureComponent {
           <SearchWrapper>
             <CSSTransition in={focus} timeout={200} classNames="slide">
               <NavSearch
-                className={focus ? "focused" : ""}
-                onFocus={() => handleInputFocus(list)}
-                onBlur={handleInputBlur}
-              />
+      className={focus ? "focused" : ""}
+      onFocus={() => handleInputFocus(list)}
+      onBlur={handleInputBlur}
+      />
             </CSSTransition>
             <svg
-              className={focus ? "focused icon zoom" : "icon zoom"}
-              aria-hidden="true"
-            >
+      className={focus ? "focused icon zoom" : "icon zoom"}
+      aria-hidden="true"
+      >
               <use xlinkHref="#iconfangdajing2" />
             </svg>
             {this.getListArea()}
@@ -123,13 +101,13 @@ const mapStateToProps = state => {
     totalPage: state.get("header").get("totalPage"),
     page: state.get("header").get("page"),
     mouseIn: state.get("header").get("mouseIn")
-    // focus: state.getIn(['header', 'focus'])
+  // focus: state.getIn(['header', 'focus'])
   };
 };
 const mapDispatchToProps = dispatch => {
   return {
     handleInputFocus(list) {
-      (list.size === 0) &&  dispatch(actionCreators.getList());
+      (list.size === 0) && dispatch(actionCreators.getList());
       dispatch(actionCreators.searchFocus());
     },
     handleInputBlur() {

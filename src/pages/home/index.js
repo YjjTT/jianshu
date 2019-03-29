@@ -8,9 +8,9 @@ import { connect } from "react-redux";
 import { actionCreators } from './store'
 
 class Home extends PureComponent {
-  
-  handleScrollTop (){
-    window.scrollTo(0,0);
+
+  handleScrollTop() {
+    window.scrollTo(0, 0);
   }
 
   render() {
@@ -18,10 +18,10 @@ class Home extends PureComponent {
       <HomeWrapper className="clearfix">
         <HomeLeft>
           <img
-            alt=""
-            className="banner-image"
-            src="//upload.jianshu.io/admin_banners/web_images/4592/22f5cfa984d47eaf3def6a48510cc87c157bf293.png?imageMogr2/auto-orient/strip|imageView2/1/w/1250/h/540"
-          />
+      alt=""
+      className="banner-image"
+      src="//upload.jianshu.io/admin_banners/web_images/4592/22f5cfa984d47eaf3def6a48510cc87c157bf293.png?imageMogr2/auto-orient/strip|imageView2/1/w/1250/h/540"
+      />
           <Topic />
           <List />
         </HomeLeft>
@@ -38,10 +38,10 @@ class Home extends PureComponent {
     this.props.changeHomeData();
     this.bindEvents();
   }
-  componentWillUnmount(){
+  componentWillUnmount() {
     window.removeEventListener('scroll', this.props.changeScrollTopShow)
   }
-  bindEvents (){
+  bindEvents() {
     window.addEventListener('scroll', this.props.changeScrollTopShow)
   }
 }
@@ -52,11 +52,11 @@ const mapDispatch = dispatch => ({
   changeHomeData() {
     dispatch(actionCreators.getHomeInfo());
   },
-  changeScrollTopShow (){
+  changeScrollTopShow() {
     let offset = document.documentElement.scrollTop
-    if(offset > 100){
+    if (offset > 100) {
       dispatch(actionCreators.toggleTopShow(true));
-    }else{
+    } else {
       dispatch(actionCreators.toggleTopShow(false));
     }
   }

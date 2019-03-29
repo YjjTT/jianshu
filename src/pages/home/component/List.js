@@ -6,12 +6,12 @@ import { Link } from 'react-router-dom'
 
 class List extends PureComponent {
   render() {
-    const { list, getMoreList, page } = this.props;
+    const {list, getMoreList, page} = this.props;
     return (
       <div>
         {list.map((item, index) => {
-          return (
-            <Link key={index} to="/detail">
+        return (
+          <Link key={index} to="/detail">
               <ListItem className="clearfix">
                 <img alt="" className="pic" src={item.get("imgUrl")} />
                 <ListInfo>
@@ -20,8 +20,8 @@ class List extends PureComponent {
                 </ListInfo>
               </ListItem>
             </Link>
-          );
-        })}
+        );
+      })}
         <LoadMore onClick={() => getMoreList(page)}>阅读更多</LoadMore>
       </div>
     );
