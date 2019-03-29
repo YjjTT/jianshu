@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import { actionCreators } from "./store";
 import { Link } from 'react-router-dom'
 import { HeaderWrapper, Logo, Nav, NavItem, NavSearch, Addition, Button, SearchWrapper, SearchInfo, SearchInfoTitle, SearchInfoSwitch, SearchInfoItem, SearchInfoList } from "./style";
+import { actionCreators as loginActionCreators } from '../../pages/login/store'
+
 
 class Header extends PureComponent {
   getListArea = () => {
@@ -48,7 +50,7 @@ class Header extends PureComponent {
     }
   };
   render() {
-    const {focus, handleInputBlur, handleInputFocus, list} = this.props;
+    const {focus, handleInputBlur, handleInputFocus, list, login} = this.props;
     return (
       <HeaderWrapper>
         <Link to='/'>
@@ -57,7 +59,12 @@ class Header extends PureComponent {
         <Nav className="clearfix">
           <NavItem className="left active">首页</NavItem>
           <NavItem className="left">下载App</NavItem>
-          <NavItem className="right">登录</NavItem>
+          {login
+        ?
+        <NavItem className="right" onClick={this.props.logOut}>退出</NavItem>
+        :
+        <Link to='/login'><NavItem className="right">登录</NavItem></Link>
+      }
           <NavItem className="right">
             <svg className="icon" aria-hidden="true">
               <use xlinkHref="#iconAa" />
@@ -81,12 +88,14 @@ class Header extends PureComponent {
           </SearchWrapper>
         </Nav>
         <Addition>
-          <Button className="writting">
+          <Link to='/write'>
+            <Button className="writting">
             <svg className="icon" aria-hidden="true">
               <use xlinkHref="#iconbi" />
             </svg>
             写文章
           </Button>
+          </Link>
           <Button className="reg">注册</Button>
         </Addition>
       </HeaderWrapper>
@@ -100,7 +109,8 @@ const mapStateToProps = state => {
     list: state.get("header").get("list"),
     totalPage: state.get("header").get("totalPage"),
     page: state.get("header").get("page"),
-    mouseIn: state.get("header").get("mouseIn")
+    mouseIn: state.get("header").get("mouseIn"),
+    login: state.get('login').get('login')
   // focus: state.getIn(['header', 'focus'])
   };
 };
@@ -133,6 +143,9 @@ const mapDispatchToProps = dispatch => {
       } else {
         dispatch(actionCreators.changePage(1));
       }
+    },
+    logOut() {
+      dispatch(loginActionCreators.logOut())
     }
   };
 };
